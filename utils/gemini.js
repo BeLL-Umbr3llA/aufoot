@@ -1,29 +1,30 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Gemini API Key ကို .env ထဲကနေ ယူမယ်
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 async function generateContent(data, type) {
   try {
-    // Model နာမည်ကို models/ မပါဘဲ အခုလို ရေးပါ
+    // Model နာမည်မှာ models/ မပါရပါ
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     let prompt = "";
     if (type === 'news') {
-      prompt = `You are a professional football news editor. Based on this info: ${data.title} - ${data.description}, 
-                write a catchy football news post in Burmese (Unicode). Use an engaging tone for Myanmar football fans.`;
+      prompt = `Football journalist style. Summarize this news in Burmese (Unicode): Title: ${data.title}, Description: ${data.description}. Make it engaging for Myanmar fans.`;
     } else if (type === 'preview') {
-      prompt = `Provide a pre-match preview in Burmese for: ${JSON.stringify(data)}. Include match time and prediction.`;
+      prompt = `Pre-match preview in Burmese for: ${data.teams.home.name} vs ${data.teams.away.name}. Prediction included.`;
     } else if (type === 'analysis') {
-      prompt = `Write a post-match analysis in Burmese based on these stats: ${JSON.stringify(data)}. Highlight key performers.`;
+      prompt = `Post-match analysis in Burmese for: ${data.teams.home.name} vs ${data.teams.away.name}. Stats: ${JSON.stringify(data.score)}.`;
     }
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text();
+    // ဤနေရာတွင် response.text() ကို သေချာခေါ်ယူပါ
+    const response = result.response;
+    const text = response.text();
+    return text;
   } catch (error) {
-    console.error("Gemini Error:", error.message);
-    return "သုံးသပ်ချက် ရေးသားရာတွင် အမှားအယွင်း ရှိနေပါသည်။";
+    // Error အစစ်အမှန်ကို Console မှာ ကြည့်နိုင်အောင် ထည့်ထားပါ
+    console.error("Gemini Error Detail:", error);
+    return `သုံးသပ်ချက် ရေးသားရာတွင် အမှားအယွင်း ရှိနေပါသည်။ (Error: ${error.message})`;
   }
 }
 
