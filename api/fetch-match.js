@@ -1,4 +1,4 @@
-const { Bot } = require('grammY');
+const { Bot } = require('grammy');
 const dbConnect = require('../utils/db');
 const Post = require('../models/Post');
 const { generateContent } = require('../utils/gemini');
