@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/fetch-news",
+      "destination": "/api/fetch-news"
+    },
+    {
+      "source": "/fetch-match",
+      "destination": "/api/fetch-match"
+    },
+    {
+      "source": "/webhook",
+      "destination": "/api/webhook"
+    }
+  ]
+}
