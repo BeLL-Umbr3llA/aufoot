@@ -16,10 +16,13 @@ async function generateContent(data, type) {
       prompt = `Post-match analysis in Burmese for: ${data.teams.home.name} vs ${data.teams.away.name}. Stats: ${JSON.stringify(data.score)}.`;
     }
 
+// 2. Content ထုတ်လုပ်ခြင်း
     const result = await model.generateContent(prompt);
-    // ဤနေရာတွင် response.text() ကို သေချာခေါ်ယူပါ
-    const response = result.response;
+    
+    // 3. Response ကို စောင့်ပြီးမှ Text ပြောင်းခြင်း (အရေးကြီးသည်)
+    const response = await result.response;
     const text = response.text();
+    
     return text;
   } catch (error) {
     // Error အစစ်အမှန်ကို Console မှာ ကြည့်နိုင်အောင် ထည့်ထားပါ
