@@ -1,27 +1,30 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// API Version ပြဿနာမတက်အောင် SDK ကို နောက်ဆုံး version သုံးပေးပါ
+// Gemini API Key ကို .env ထဲကနေ ယူမယ်
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 async function generateContent(data, type) {
-  // model name ကို သေချာစစ်ပါ
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  try {
+    // Model နာမည်ကို models/ မပါဘဲ အခုလို ရေးပါ
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  
-  let prompt = "";
-  if (type === 'news') {
-    prompt = `You are a professional football journalist in Myanmar. Translate and summarize this news: "${data.description || data.title}". 
-              Create a catchy Unicode Burmese headline. Tone: Exciting and informative. Use football slang used in Myanmar.`;
-  } else if (type === 'preview') {
-    prompt = `Write a pre-match preview in Burmese for this match: ${data.teams.home.name} vs ${data.teams.away.name}. 
-              Base it on these stats: ${JSON.stringify(data)}. Include predicted winner.`;
-  } else if (type === 'analysis') {
-    prompt = `Write a professional post-match analysis in Burmese for: ${data.teams.home.name} ${data.goals.home}-${data.goals.away} ${data.teams.away.name}. 
-              Highlight key moments and player performances.`;
+    let prompt = "";
+    if (type === 'news') {
+      prompt = `You are a professional football news editor. Based on this info: ${data.title} - ${data.description}, 
+                write a catchy football news post in Burmese (Unicode). Use an engaging tone for Myanmar football fans.`;
+    } else if (type === 'preview') {
+      prompt = `Provide a pre-match preview in Burmese for: ${JSON.stringify(data)}. Include match time and prediction.`;
+    } else if (type === 'analysis') {
+      prompt = `Write a post-match analysis in Burmese based on these stats: ${JSON.stringify(data)}. Highlight key performers.`;
+    }
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
+  } catch (error) {
+    console.error("Gemini Error:", error.message);
+    return "သုံးသပ်ချက် ရေးသားရာတွင် အမှားအယွင်း ရှိနေပါသည်။";
   }
-
-  const result = await model.generateContent(prompt);
-  return result.response.text();
 }
 
 module.exports = { generateContent };
