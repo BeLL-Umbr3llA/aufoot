@@ -1,4 +1,4 @@
-const { Bot, InlineKeyboard } = require('grammY');
+const { Bot, InlineKeyboard } = require('grammy');
 const dbConnect = require('../utils/db');
 const Post = require('../models/Post');
 const { generateContent } = require('../utils/gemini');
