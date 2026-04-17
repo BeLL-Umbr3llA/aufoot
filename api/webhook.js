@@ -1,4 +1,4 @@
-const { Bot, webhookCallback } = require('grammY');
+const { Bot, webhookCallback } = require('grammy');
 const dbConnect = require('../utils/db');
 const Post = require('../models/Post');
 
