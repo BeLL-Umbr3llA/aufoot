@@ -1,8 +1,12 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// API Version ပြဿနာမတက်အောင် SDK ကို နောက်ဆုံး version သုံးပေးပါ
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 async function generateContent(data, type) {
+  // model name ကို သေချာစစ်ပါ
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
   
   let prompt = "";
   if (type === 'news') {
