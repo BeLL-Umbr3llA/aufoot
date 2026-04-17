@@ -2,9 +2,10 @@
   "name": "football-gemini-bot",
   "version": "1.0.0",
   "main": "api/webhook.js",
+ 
   "dependencies": {
+    "grammy": "^1.21.1",
     "@google/generative-ai": "^0.3.0",
-    "grammY": "^1.21.1",
     "mongoose": "^8.2.1",
     "node-fetch": "^2.7.0"
   }
